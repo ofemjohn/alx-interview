@@ -1,12 +1,13 @@
 def canUnlockAll(boxes):
-    # Create a set to keep track of the boxes that have been visited
+    ''' Create a set to keep track of the boxes that have been visited'''
     visited = set()
-    visited.add(0)  # The first box is unlocked
+    visited.add(0)
+    '''# The first box is unlocked'''
 
-    # Create a queue to hold the boxes that need to be checked
+    '''Create a queue to hold the boxes that need to be checked'''
     queue = [0]
 
-    # Loop through the queue and check the boxes
+    '''Loop through the queue and check the boxes'''
     while queue:
         box = queue.pop(0)
         for key in boxes[box]:
@@ -14,5 +15,5 @@ def canUnlockAll(boxes):
                 visited.add(key)
                 queue.append(key)
 
-    # If all the boxes have been visited, return True
+    '''If all the boxes have been visited, return True'''
     return len(visited) == len(boxes)
