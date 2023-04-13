@@ -1,20 +1,19 @@
 #!/usr/bin/python3
 import sys
-'''
-Write a script that reads stdin line
- by line and computes metrics:
-'''
 
 
-def print_stats(total_file_size, code_counts):
-    print("File size:", total_file_size)
-    for code, count in code_counts.items():
-        if count > 0:
-            print(f"{code}: {count}")
+def print_msg(dict_sc, file_size):
+    '''print a list of dicts'''
+    print("File size: {}".format(file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
 
-total_file_size = 0
-code_counts = {
+file_size = 0
+code = 0
+counter = 0
+dict_sc = {
     "200": 0,
     "301": 0,
     "400": 0,
@@ -23,13 +22,26 @@ code_counts = {
     "404": 0,
     "405": 0,
     "500": 0
-}
-for i, line in enumerate(sys.stdin, start=1):
-    fields = line.strip().split()
-    file_size = int(fields[-1])
-    status_code = fields[-2]
-    total_file_size += file_size
-    code_counts[status_code] += 1
-    if i % 10 == 0:
-        print_stats(total_file_size, code_counts)
-print_stats(total_file_size, code_counts)
+    }
+
+try:
+    for line in sys.stdin:
+        parsed_line = line.split()
+        parsed_line = parsed_line[::-1]
+
+        if len(parsed_line) > 2:
+            counter += 1
+
+            if counter <= 10:
+                file_size += int(parsed_line[0])
+                code = parsed_line[1]
+
+                if (code in dict_sc.keys()):
+                    dict_sc[code] += 1
+
+            if (counter == 10):
+                print_msg(dict_sc, file_size)
+                counter = 0
+
+finally:
+    print_msg(dict_sc, file_size)
