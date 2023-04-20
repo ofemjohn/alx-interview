@@ -6,7 +6,6 @@ def validUTF8(data):
     '''a utf-a f'''
     num_bytes = 0
     for byte in data:
-        # If we're not in the middle of a character, determine its length
         if num_bytes == 0:
             if byte >> 5 == 0b110:
                 num_bytes = 1
@@ -16,8 +15,6 @@ def validUTF8(data):
                 num_bytes = 3
             elif byte >> 7:
                 return False
-        # If we are in the middle of a character,
-        #  check that the next byte starts with 0b10
         else:
             if byte >> 6 != 0b10:
                 return False
