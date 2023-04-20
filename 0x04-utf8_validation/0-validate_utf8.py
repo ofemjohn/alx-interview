@@ -1,22 +1,40 @@
-#!/usr/bin/env python3
-'''working with utf-8'''
+#!/usr/bin/python3
+''' UTF-8 '''
 
 
 def validUTF8(data):
-    '''a utf-a f'''
+    '''
+    function to determines if a given data set represents a valid
+    UTF-8 encoding.
+    '''
     num_bytes = 0
-    for byte in data:
+
+    mask_1 = 1 << 7
+    mask_2 = 1 << 6
+
+    for i in data:
+
+        mask_byte = 1 << 7
+
         if num_bytes == 0:
-            if byte >> 5 == 0b110:
-                num_bytes = 1
-            elif byte >> 4 == 0b1110:
-                num_bytes = 2
-            elif byte >> 3 == 0b11110:
-                num_bytes = 3
-            elif byte >> 7:
+
+            while mask_byte & i:
+                num_bytes += 1
+                mask_byte = mask_byte >> 1
+
+            if num_bytes == 0:
+                continue
+
+            if num_bytes == 1 or num_bytes > 4:
                 return False
+
         else:
-            if byte >> 6 != 0b10:
-                return False
-            num_bytes -= 1
-    return num_bytes == 0
+            if not (i & mask_1 and not (i & mask_2)):
+                    return False
+
+        num_bytes -= 1
+
+    if num_bytes == 0:
+        return True
+
+    return False
