@@ -1,61 +1,51 @@
-#!/usr/bin/env python3
-'''interview question for chessboard'''
-from sys import argv
+#!/usr/bin/python3
+'''interview for chesse queen'''
+import sys
 
 
-def save_nqueen(board, row, col):
-    '''save n queens'''
-    for i in range(row):
-        if board[i][col] == 1:
-            return False
-    (i, j) = (row, col)
-    while i >= 0 and j >= 0:
-        if board[i][j] == 1:
-            return False
-        i = i - 1
-        j = j - 1
-    (i, j) = (row, col)
-    while i >= 0 and j < len(board):
-        if board[i][j] == 1:
-            return False
-        i = i - 1
-        j = j + 1
-    return True
+def nqueens(n):
+    '''return ueens'''
+    def save_nqueen(board, row, col):
+        '''save queen'''
+        for i in range(col):
+            if board[i] == row or \
+               board[i] - i == row - col or \
+               board[i] + i == row + col:
+                return False
+        return True
+
+    def solution(board, col, solutions):
+        '''find the solution'''
+        if col == n:
+            solutions.append(board[:])
+            return
+
+        for row in range(n):
+            if save_nqueen(board, row, col):
+                board[col] = row
+                solution(board, col + 1, solutions)
+                board[col] = -1
+
+    board = [-1] * n
+    solutions = []
+    solution(board, 0, solutions)
+
+    for s in solutions:
+        print([[i, s[i]] for i in range(n)])
 
 
-def queen_sol(board):
-    '''return solution'''
-    result = []
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if board[i][j] == 1:
-                result.append([i, j])
-    print(result)
+if len(sys.argv) != 2:
+    print("Usage: nqueens N")
+    sys.exit(1)
 
-
-def nqueen(board, row):
-    '''return queen'''
-    if row == len(board):
-        queen_sol(board)
-        return
-    for i in range(len(board)):
-        if save_nqueen(board, row, i):
-            board[row][i] = 1
-            nqueen(board, row + 1)
-            board[row][i] = 0
-
-
-if len(argv) != 2:
-    print('Usage: nqueens N')
-    exit(1)
 try:
-    n = int(argv[1])
+    n = int(sys.argv[1])
 except ValueError:
-    print('N must be a number')
-    exit(1)
-if n < 4:
-    print('N must be at least 4')
-    exit(1)
+    print("N must be a number")
+    sys.exit(1)
 
-board = [[0 for x in range(n)] for y in range(n)]
-nqueen(board, 0)
+if n < 4:
+    print("N must be at least 4")
+    sys.exit(1)
+
+nqueens(n)
