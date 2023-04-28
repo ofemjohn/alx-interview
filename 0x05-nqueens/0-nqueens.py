@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 programm that places N non-attacking
-queens on an N×N chessboard
+queens on an NxN chessboard
 '''
 from sys import argv
 
