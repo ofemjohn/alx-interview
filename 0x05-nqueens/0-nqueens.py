@@ -1,43 +1,61 @@
 #!/usr/bin/env python3
-'''
-programm that places N non-attacking
-queens on an NxN chessboard
-'''
-import sys
+'''interview question for chessboard'''
+from sys import argv
 
-if not sys.argv[1].isdigit():
-    print("N must be a number")
+
+def save_nqueen(board, row, col):
+    '''save n queens'''
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+    (i, j) = (row, col)
+    while i >= 0 and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i = i - 1
+        j = j - 1
+    (i, j) = (row, col)
+    while i >= 0 and j < len(board):
+        if board[i][j] == 1:
+            return False
+        i = i - 1
+        j = j + 1
+    return True
+
+
+def queen_sol(board):
+    '''return solution'''
+    result = []
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            if board[i][j] == 1:
+                result.append([i, j])
+    print(result)
+
+
+def nqueen(board, row):
+    '''return queen'''
+    if row == len(board):
+        queen_sol(board)
+        return
+    for i in range(len(board)):
+        if save_nqueen(board, row, i):
+            board[row][i] = 1
+            nqueen(board, row + 1)
+            board[row][i] = 0
+
+
+if len(argv) != 2:
+    print('Usage: nqueens N')
     exit(1)
-if len(sys.argv) > 2 or len(sys.argv) < 2:
-    print("Usage: nqueens N")
+try:
+    n = int(argv[1])
+except ValueError:
+    print('N must be a number')
     exit(1)
-if int(sys.argv[1]) < 4:
-    print("N must be at least 4")
+if n < 4:
+    print('N must be at least 4')
     exit(1)
-n = int(sys.argv[1])
 
-
-def nqueens(N, x=0, a=[], b=[], c=[]):
-    '''return queens'''
-    if x < N:
-        for j in range(N):
-            if j not in a and x + j not in b and x - j not in c:
-                yield from nqueens(N, x + 1, a + [j], b + [x + j], c + [x - j])
-    else:
-        yield a
-
-
-def solution(n):
-    '''append nqueens'''
-    q = []
-    i = 0
-    for solution in nqueens(n, 0):
-        for sol in solution:
-            q.append([i, sol])
-            i += 1
-        print(q)
-        k = []
-        i = 0
-
-
-solution(n)
+board = [[0 for x in range(n)] for y in range(n)]
+nqueen(board, 0)
