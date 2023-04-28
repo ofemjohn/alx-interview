@@ -1,0 +1,3 @@
+# ALX INTERVIE QUESTION
+
+0x05. N Queens
