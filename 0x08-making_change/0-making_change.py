@@ -17,22 +17,16 @@ def makeChange(coins, total):
     '''returns fewest number of coins needed to meet total.'''
     if total == 0:
         return 0
-    min_num_coins = [float('inf')] * (total + 1)
-    min_num_coins[0] = 0
-
-    for coin in coins:
-        # Update the fewest number of coins needed for
-        # each value from the current coin value to total
-        for value in range(coin, total + 1):
-            if min_num_coins[value - coin] != float('inf'):
-                min_num_coins[value] = min(
-                    min_num_coins[value], 1 + min_num_coins[value - coin])
-    # If the fewest number of coins needed for
-    #  the total is still infinity, it means it
-    #  cannot be met by any number of coins
-    if min_num_coins[total] == float('inf'):
-        return -1
-
-    # Return the fewest number of coins
-    # needed for the total
-    return min_num_coins[total]
+    count = 0
+    index = 0
+    sorted_coins = sorted(coins, reverse=True)
+    length = len(coins)
+    while total > 0:
+        if index >= length:
+            return -1
+        if total - sorted_coins[index] >= 0:
+            total -= sorted_coins[index]
+            count += 1
+        else:
+            index += 1
+    return count
