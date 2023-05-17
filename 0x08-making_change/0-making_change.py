@@ -22,14 +22,19 @@ def makeChange(coins, total):
     min_num_coins = [float('inf')] * (total + 1)
     min_num_coins[0] = 0
 
-    for amount in range(1, total + 1):
-        for coin in coins:
-            if coin <= amount:
-                new_min_coin = min_num_coins[amount - coin] + 1
-                if min_num_coins[amount] > new_min_coin:
-                    min_num_coins[amount] = new_min_coin
+    for coin in coins:
+        # Update the fewest number of coins needed for
+        # each value from the current coin value to total
+        for value in range(coin, total + 1):
+            min_num_coins[value] = min(
+                min_num_coins[value], 1 + min_num_coins[value - coin])
 
+    # If the fewest number of coins needed for
+    #  the total is still infinity, it means it
+    #  cannot be met by any number of coins
     if min_num_coins[total] == float('inf'):
         return -1
-    else:
-        return min_num_coins[total]
+
+    # Return the fewest number of coins
+    # needed for the total
+    return min_num_coins[total]
