@@ -27,3 +27,27 @@ carrie@ubuntu:~/0x08-making_change$ ./0-main.py
 7
 -1
 carrie@ubuntu:~/0x08-making_change$
+
+```
+def makeChange(coins, total):
+    '''returns fewest number of coins needed to meet total.'''
+    min_num_coins = [float('inf')] * (total + 1)
+    min_num_coins[0] = 0
+
+    if total == 0:
+        return 0
+    if total < 0:
+        return -1
+
+    for amount in range(1, total + 1):
+        for coin in coins:
+            if coin <= amount:
+                new_min_coin = min_num_coins[amount - coin] + 1
+                if min_num_coins[amount] > new_min_coin:
+                    min_num_coins[amount] = new_min_coin
+
+    if min_num_coins[total] == float('inf'):
+        return -1
+    else:
+        return min_num_coins[total]
+```

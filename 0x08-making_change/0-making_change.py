@@ -15,13 +15,12 @@ Returns the fewest number of coins needed to meet a given amount total.
 
 def makeChange(coins, total):
     '''returns fewest number of coins needed to meet total.'''
-    min_num_coins = [float('inf')] * (total + 1)
-    min_num_coins[0] = 0
-
     if total == 0:
         return 0
     if total < 0:
         return -1
+    min_num_coins = [float('inf')] * (total + 1)
+    min_num_coins[0] = 0
 
     for amount in range(1, total + 1):
         for coin in coins:
