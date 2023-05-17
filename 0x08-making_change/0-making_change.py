@@ -26,9 +26,9 @@ def makeChange(coins, total):
         # Update the fewest number of coins needed for
         # each value from the current coin value to total
         for value in range(coin, total + 1):
-            min_num_coins[value] = min(
-                min_num_coins[value], 1 + min_num_coins[value - coin])
-
+            if min_num_coins[value - coin] != float('inf'):
+                min_num_coins[value] = min(
+                    min_num_coins[value], 1 + min_num_coins[value - coin])
     # If the fewest number of coins needed for
     #  the total is still infinity, it means it
     #  cannot be met by any number of coins
